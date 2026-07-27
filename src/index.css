@@ -144,6 +144,50 @@ body.modal-open{overflow:hidden}
 .foot a:hover{color:var(--text)}
 .foot .sep{opacity:.4}
 
+/* ---------- WhatsApp sabit buton ----------
+   z-index 15: içeriğin (.wrap = 3) üstünde, modalın (20) altında. Modal açıldığında
+   backdrop'un arkasında kalır; ayrıca .is-hidden ile klavye sırasından da çıkar.
+   Kap sitenin diline çevrildi (koyu cam, ince kenarlık); ikon WhatsApp yeşilinde
+   bırakıldı — tanınırlık dönüşümün yarısı. */
+.wa-fab{position:fixed;z-index:15;
+  right:max(20px, calc(env(safe-area-inset-right) + 12px));
+  bottom:max(20px, calc(env(safe-area-inset-bottom) + 12px));
+  display:inline-flex;align-items:center;height:54px;padding:0 15px;
+  border-radius:999px;border:1px solid rgba(255,255,255,.14);
+  background:rgba(10,13,20,.52);
+  backdrop-filter:blur(12px) saturate(130%);-webkit-backdrop-filter:blur(12px) saturate(130%);
+  box-shadow:0 10px 34px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.07);
+  color:var(--text);text-decoration:none;
+  opacity:0;visibility:hidden;transform:translateY(14px) scale(.94);
+  transition:opacity .5s var(--ease), transform .5s var(--ease), visibility 0s linear .5s,
+             background .3s ease, border-color .3s ease, box-shadow .3s ease;}
+
+/* Giriş hero ile birlikte, GECİKMELİ. Gecikme yalnızca bu kuralda: temel kuralda
+   olsaydı hover ve gizlenme de gecikirdi. */
+.wrap.in ~ .wa-fab{opacity:1;visibility:visible;transform:none;
+  transition:opacity .6s var(--ease) .9s, transform .6s var(--ease) .9s, visibility 0s,
+             background .3s ease, border-color .3s ease, box-shadow .3s ease;}
+
+/* Modal açıkken: ANINDA gizlen (gecikme yok). Seçici .wrap.in ~ .wa-fab'ı
+   yenecek kadar özgül olmak zorunda, yoksa gizlenme hiç uygulanmaz. */
+.wrap.in ~ .wa-fab.is-hidden{opacity:0;visibility:hidden;transform:translateY(8px) scale(.96);
+  transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s;}
+
+.wa-icon{display:grid;place-items:center;width:24px;height:24px;flex:0 0 auto;color:#25D366}
+.wa-icon svg{width:24px;height:24px;display:block}
+.wa-label{white-space:nowrap;font-size:14px;font-weight:500;letter-spacing:.01em;
+  max-width:0;opacity:0;margin-left:0;overflow:hidden;
+  transition:max-width .45s var(--ease), opacity .3s ease, margin-left .45s var(--ease);}
+
+/* Etiket yalnızca gerçek hover'ı olan cihazlarda açılır; dokunmatikte ikon kalır. */
+@media (hover:hover){
+  .wa-fab:hover{background:rgba(18,23,34,.74);border-color:rgba(255,255,255,.24);
+    box-shadow:0 14px 44px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.1)}
+  .wa-fab:hover .wa-label{max-width:220px;opacity:1;margin-left:11px}
+}
+.wa-fab:active{filter:brightness(.9)}
+.wa-fab:focus-visible{outline:2px solid rgba(160,190,245,.8);outline-offset:3px}
+
 /* ---------- Modal / Form ---------- */
 .modal{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
   padding:clamp(16px,4vw,40px);
@@ -245,6 +289,9 @@ textarea.control{resize:vertical;min-height:96px;line-height:1.5;font-family:inh
   .foot{gap:6px 14px}
   .foot .sep{display:none}
   .cursor-glow{display:none}
+  /* Dar ekranda footer 2-3 satıra sarıyor ve sabit butonun altına giriyordu. */
+  .wrap{padding-bottom:96px}
+  .wa-fab{height:50px;padding:0 13px}
 }
 
 /* ---------- Reduced motion ---------- */

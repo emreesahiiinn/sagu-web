@@ -11,7 +11,14 @@ export const CONTACT = {
   phoneLabel: '+90 542 676 54 48',
   phoneHref: 'tel:+905426765448',
   email: 'fcetinol@sagutasarim.com',
+  /* wa.me formatı: ülke kodu dahil, BAŞINDA + YOK, boşluk/işaret yok. */
+  whatsapp: '905426765448',
+  whatsappText: 'Merhaba, SAGU hakkında bilgi almak istiyorum.',
 }
+
+/** wa.me linki — mobilde uygulamayı, masaüstünde web.whatsapp.com'u açar. */
+export const waLink = (text: string = CONTACT.whatsappText) =>
+  `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(text)}`
 
 /**
  * Formun gönderim adresi. Bunu kendi Worker'ımız karşılar (worker/index.ts) ve

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Scene from './components/Scene'
 import Hero from './components/Hero'
 import QuoteModal from './components/QuoteModal'
+import WhatsAppFab from './components/WhatsAppFab'
 import { CONTACT } from './data'
 
 export default function App() {
@@ -34,6 +35,10 @@ export default function App() {
           <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
         </footer>
       </div>
+
+      {/* .wrap dışında: modal açıkken hero'yla birlikte bulanıklaşmasın, kendi
+          görünürlüğünü `hidden` ile yönetsin. */}
+      <WhatsAppFab hidden={open} />
 
       <QuoteModal open={open} prefill={prefill} onClose={() => setOpen(false)} />
     </>
