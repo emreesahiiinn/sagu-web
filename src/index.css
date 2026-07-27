@@ -90,14 +90,21 @@ body.modal-open{overflow:hidden}
   color:rgba(238,241,247,.55);font-weight:500;padding-left:.42em;text-shadow:0 1px 24px rgba(0,0,0,.6);}
 
 .logo-block{display:flex;flex-direction:column;align-items:center;gap:14px;}
-.logo{font-family:"Space Grotesk",sans-serif;font-weight:700;
-  font-size:clamp(64px,15vw,168px);line-height:.82;letter-spacing:-.02em;
-  color:var(--text);text-shadow:0 3px 50px rgba(0,0,0,.5), 0 0 110px rgba(150,180,235,.22);display:inline-flex;cursor:default;}
-.logo span{display:inline-block;transition:transform .5s var(--ease-spring)}
-.logo:hover span:nth-child(1){transform:translateY(-6px)}
-.logo:hover span:nth-child(2){transform:translateY(4px)}
-.logo:hover span:nth-child(3){transform:translateY(-4px)}
-.logo:hover span:nth-child(4){transform:translateY(6px)}
+/* Wordmark inline SVG (Wordmark.tsx). viewBox 144x92 -> en/boy 1.565.
+   overflow:visible ŞART: U harfi viewBox'ın en altında (y=91.4/92) bitiyor,
+   hover'da aşağı kayınca SVG kökü onu kırpardı.
+   text-shadow yerine drop-shadow: gölge harflerin gerçek konturunu takip eder,
+   kutuyu değil. Blur değerleri text-shadow'un ~yarısı olacak şekilde çevrildi. */
+.logo{width:clamp(168px,22vw,350px);height:auto;max-height:30vh;overflow:visible;
+  color:var(--text);cursor:default;
+  filter:drop-shadow(0 3px 25px rgba(0,0,0,.55)) drop-shadow(0 0 55px rgba(150,180,235,.22));}
+/* DİKKAT: SVG içinde transform uzunlukları viewBox BİRİMİDİR, CSS pikseli değil.
+   Yükseklik 92 birim; 3-4 birim ~ %3-4, eski 168px metindeki 6px ile aynı oran. */
+.logo .ltr{transition:transform .5s var(--ease-spring)}
+.logo:hover .ltr-s{transform:translateY(-4px)}
+.logo:hover .ltr-a{transform:translateY(3px)}
+.logo:hover .ltr-g{transform:translateY(-3px)}
+.logo:hover .ltr-u{transform:translateY(4px)}
 
 /* Hizmetler — iki sıra ters yönde kayan zarif şerit */
 .marquee{width:100vw;margin-left:calc(50% - 50vw);display:flex;flex-direction:column;gap:11px;

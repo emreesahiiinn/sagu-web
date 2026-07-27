@@ -1,4 +1,5 @@
 import { TAGS } from '../data'
+import Wordmark from './Wordmark'
 
 type Props = { onQuote: (product?: string) => void }
 
@@ -27,12 +28,7 @@ export default function Hero({ onQuote }: Props) {
       <div className="eyebrow">Reklam · Tanıtım · Tasarım</div>
 
       <div className="logo-block">
-        <div className="logo" aria-label="SAGU">
-          <span>S</span>
-          <span>A</span>
-          <span>G</span>
-          <span>U</span>
-        </div>
+        <Wordmark />
       </div>
 
       <div className="marquee" role="list" aria-label="Ürün ve hizmetler">
