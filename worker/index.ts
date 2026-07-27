@@ -52,8 +52,12 @@ async function handleQuote(request: Request, env: Env): Promise<Response> {
   const missing = (['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'MAIL_TO', 'MAIL_FROM'] as const)
     .filter((k) => !env[k])
   if (missing.length) {
+    /* Eksik anahtar ADLARINI yanıta da koy. Bunlar zaten repoda ve README'de
+       açıkta duruyor, yani sızan bir bilgi yok; karşılığında "hangisi eksik"
+       sorusu log'a bakmadan, doğrudan tarayıcıdan cevaplanıyor. Değerler
+       elbette asla dönmez. */
     console.error('[quote] eksik yapılandırma:', missing.join(', '))
-    return json({ ok: false, error: 'config' }, 500)
+    return json({ ok: false, error: 'config', missing }, 500)
   }
   /* Gmail/Workspace, gönderen adresi doğrulanan hesapla aynı değilse From'u
      sessizce yeniden yazar. Mail yine ulaşır ama sebebi anlaşılmaz görünür —
