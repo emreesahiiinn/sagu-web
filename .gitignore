@@ -6,3 +6,9 @@ dist-ssr
 *.local
 .DS_Store
 .vite
+
+# Cloudflare yerel gizli değişkenleri (SMTP) — asla commitlenmez
+.dev.vars
+
+# wrangler yerel durumu
+.wrangler/

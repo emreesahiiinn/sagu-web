@@ -14,15 +14,9 @@ export const CONTACT = {
 }
 
 /**
- * Web3Forms ayarı.
- * Access key'i https://web3forms.com adresinden (fcetinol@sagutasarim.com ile) al.
- * En temizi: proje köküne `.env` koyup  VITE_WEB3FORMS_KEY=xxxx  yaz.
- * Alternatif: aşağıdaki fallback string'i doğrudan key ile değiştir.
+ * Formun gönderim adresi. Bunu kendi Worker'ımız karşılar (worker/index.ts) ve
+ * mail'i KENDİ SMTP sunucumuz üzerinden atar — üçüncü taraf bir form servisi ya
+ * da API key yok. SMTP bilgileri yalnızca sunucu tarafında (Cloudflare secret)
+ * durur, bu dosyaya ve tarayıcıya asla girmez.
  */
-export const CONFIG = {
-  accessKey: import.meta.env.VITE_WEB3FORMS_KEY ?? 'YOUR_ACCESS_KEY_HERE',
-  subject: 'Yeni Teklif Talebi — SAGU Web Sitesi',
-}
-
-export const KEY_SET =
-  !!CONFIG.accessKey && CONFIG.accessKey !== 'YOUR_ACCESS_KEY_HERE'
+export const QUOTE_ENDPOINT = '/api/quote'

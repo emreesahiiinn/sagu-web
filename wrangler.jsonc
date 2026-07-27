@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sagu-web",
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-09-01",
+
+  // Statik varlıklar dist/ içinden servis edilir. Worker yalnızca /api/quote'u
+  // karşılar, kalan her isteği ASSETS'e devreder (worker/index.ts).
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+
+  "observability": { "enabled": true }
+
+  // SMTP bilgileri BURAYA YAZILMAZ. Secret olarak eklenir:
+  //   npx wrangler secret put SMTP_HOST
+  //   npx wrangler secret put SMTP_PORT     (465 önerilir)
+  //   npx wrangler secret put SMTP_USER
+  //   npx wrangler secret put SMTP_PASS
+  //   npx wrangler secret put MAIL_TO       (fcetinol@sagutasarim.com)
+  //   npx wrangler secret put MAIL_FROM     (gönderen adres; SMTP_USER ile aynı olabilir)
+  // Yerel geliştirmede aynı değerler .dev.vars dosyasına yazılır (git'e girmez).
+}

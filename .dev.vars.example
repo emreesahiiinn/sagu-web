@@ -1,0 +1,25 @@
+# SAGU — yerel geliştirme için SMTP bilgileri.
+# Bu dosyayı `.dev.vars` olarak kopyala ve doldur. `.dev.vars` git'e GİRMEZ.
+# Yayında bu değerler dosyaya değil, Cloudflare secret'ına yazılır:
+#     npx wrangler secret put SMTP_PASS       (her biri için ayrı ayrı)
+#
+# ── GOOGLE WORKSPACE ─────────────────────────────────────────────────────────
+# SMTP_PASS'e hesabının normal parolası YAZILMAZ — Google bunu kabul etmiyor.
+# "Uygulama Şifresi" (App Password) üretmen gerekir; bunun için de o hesapta
+# 2 Adımlı Doğrulama açık olmalı:
+#     Google Hesabı → Güvenlik → 2 Adımlı Doğrulama (aç)
+#     → Uygulama şifreleri → yeni üret → çıkan 16 haneli kodu buraya yapıştır
+# Kod "abcd efgh ijkl mnop" gibi boşluklu gösterilir; BOŞLUKSUZ yapıştır.
+#
+# MAIL_FROM, SMTP_USER ile AYNI olmalı. Farklı yazarsan Google gönderen adresini
+# sessizce kendi hesabınla değiştirir (ya da reddeder). Ziyaretçinin adresi
+# zaten From'a değil Reply-To'ya konuyor — "Yanıtla" dediğinde ona gider.
+#
+# 465 = örtük TLS (önerilir). 587 = STARTTLS de çalışır.
+# 25 numaralı port Cloudflare'de KAPALIDIR, kullanma.
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_USER=fcetinol@sagutasarim.com
+SMTP_PASS=
+MAIL_TO=fcetinol@sagutasarim.com
+MAIL_FROM=fcetinol@sagutasarim.com

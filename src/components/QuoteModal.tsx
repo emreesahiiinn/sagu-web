@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import Segmented from './Segmented'
-import { CONFIG, KEY_SET } from '../data'
+import { QUOTE_ENDPOINT } from '../data'
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const phoneRe = /^[+()\d][\d\s()\-.]{6,}$/
@@ -68,30 +68,26 @@ export default function QuoteModal({ open, prefill, onClose }: Props) {
     setNote(null)
     setLoading(true)
 
-    // Demo modu: key yoksa başarı ekranını göster (gerçek mail gitmez)
-    if (!KEY_SET) {
-      console.warn('[SAGU] Demo modu — Web3Forms access key eklenince gerçek mail gönderilir.')
-      await new Promise((r) => setTimeout(r, 900))
-      setSuccess(true)
-      setLoading(false)
-      return
-    }
-
+    /* Kendi Worker'ımıza gönderilir; o da kendi SMTP sunucumuz üzerinden mail atar.
+       Başarı ekranı YALNIZCA sunucu gerçekten gönderdiğini doğrularsa gösterilir —
+       eski "demo modu" yapılandırma eksikken bile "ulaştı" diyordu, ki bu
+       ziyaretçiyi yanıltmaktı. */
     try {
-      const fd = new FormData()
-      fd.append('access_key', CONFIG.accessKey)
-      fd.append('subject', CONFIG.subject)
-      fd.append('from_name', 'SAGU Web Sitesi')
-      fd.append(nameType === 'firma' ? 'Firma Adı' : 'Ad Soyad', n)
-      fd.append(contactIsEmail ? 'E-Posta' : 'Telefon', c)
-      fd.append('İlgilenilen Ürün / Mesaj', p || '—')
-      if (contactIsEmail) fd.append('replyto', c)
-      fd.append('botcheck', botRef.current?.checked ? 'true' : '')
-
-      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
-      const data = await res.json()
-      if (data.success) setSuccess(true)
-      else throw new Error(data.message || 'Gönderilemedi')
+      const res = await fetch(QUOTE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          nameType,
+          name: n,
+          contactType,
+          contact: c,
+          product: p,
+          botcheck: botRef.current?.checked ? 'true' : '',
+        }),
+      })
+      const data = (await res.json().catch(() => null)) as { ok?: boolean } | null
+      if (res.ok && data?.ok) setSuccess(true)
+      else throw new Error(`quote endpoint ${res.status}`)
     } catch (err) {
       setNote({ msg: 'Bir sorun oluştu. Lütfen tekrar deneyin ya da doğrudan arayın: +90 542 676 54 48', type: 'err' })
       console.error(err)

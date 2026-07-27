@@ -1,8 +1,4 @@
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  readonly VITE_WEB3FORMS_KEY?: string
-}
-interface ImportMeta {
-  readonly env: ImportMetaEnv
-}
+/* İstemci tarafında gizli değişken YOKTUR. SMTP bilgileri yalnızca Worker'da,
+   Cloudflare secret'ı olarak okunur (bkz. worker/index.ts → Env). */
